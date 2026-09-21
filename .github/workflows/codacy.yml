@@ -41,6 +41,20 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -e ./rosemary
+    
+    - name: Check for outdated dependencies
+      run: |
+        pip install pip-review
+        pip-review --local
+    
+    - name: Check python compatibility
+      run: | 
+        python scripts/check_version.py 3.13 3.14
+
+    - name: Security audit dependencies
+      run: |
+        pip install pip-audit
+        pip-audit -r requirements.txt || true
 
     - name: Run tests with coverage
       run: |
